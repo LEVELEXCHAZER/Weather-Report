@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0,maximum-scale=1">
+		
+		<title>Weather Forecast</title>
+
+		<!-- Loading third party fonts -->
+		<link href="http://fonts.googleapis.com/css?family=Roboto:300,400,700|" rel="stylesheet" type="text/css">
+		<link href="fonts/font-awesome.min.css" rel="stylesheet" type="text/css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+		<link rel="stylesheet" href="style.css">
+		
+		
+
+	</head>
+
+
+	<body>
+		
+		<div class="site-content">
+			<div class="site-header">
+				<div class="container">
+					<a href="index.html" class="branding">
+						<img src="images/logo.png" alt="" class="logo">
+						<div class="logo-type">
+							<h1 class="site-title">Weather Forecast</h1>
+							<small class="site-description"></small>
+						</div>
+					</a>
+
+					<!-- Default snippet for navigation -->
+					<div class="main-navigation">
+						<button type="button" class="menu-toggle"><i class="fa fa-bars"></i></button>
+						<ul class="menu">
+							<li class="menu-item current-menu-item"><a href="index.html">Home</a></li>
+						
+							
+						</ul> 
+					</div> 
+
+					<div class="mobile-navigation"></div>
+
+				</div>
+			</div> <!-- .site-header -->
+
+			<p>Click the button to get your coordinates.</p>
+
+			<button onclick="getLocation()">Try It</button>
+			
+			<p id="demo"></p>
+
+			<div class="hero" data-bg-image="images/banner.png">
+				<div class="container">
+					<form action="#"  class="find-location">
+						<input type="text"  placeholder="Find your location..." id="cname">
+<button onclick="Search()">find </button>					</form>
+
+				</div>
+				<div id="result" class="mt-5">
+
+				</div>
+			</div>
+			
+			
+	</body>
+<script>
+	var x = document.getElementById("demo");
+
+function getLocation() {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(showPosition);
+  } else { 
+    x.innerHTML = "Geolocation is not supported by this browser.";
+  }
+}
+
+function showPosition(position) {
+  x.innerHTML = "Latitude: " + position.coords.latitude + 
+  "<br>Longitude: " + position.coords.longitude;
+}
+
+	function Search(){
+		Place=cname.value
+		fetch(`https://api.openweathermap.org/data/2.5/weather?q=${Place}&appid=b41ec3be35c7dac8aabbc21ba253137a`).then(data=>data.json())
+		.then(outdata=>DisplayData(outdata))
+
+
+
+		function DisplayData(data){
+			Name=data.name
+			temperature=data.main.temp
+			windspeed=data.wind.speed
+			icon=data.weather[0].icon
+			humidity=data.main.humidity
+
+			result.innerHTML=`<div class="forecast-table">
+				<div class="container">
+					<div class="forecast-container">
+						<div class="today forecast">
+							<div class="forecast-header">
+								// <div class="day">Friday</div>
+								 <div class="date">22 sep</div>
+							</div> <!-- .forecast-header -->
+							<div class="forecast-content">
+								<div class="location">${Name}</div>
+								<div class="degree">
+									<div class="num">${temperature}<sup></sup>F</div>
+									<div class="forecast-icon">
+										<img src="images/icons/icon-1.svg" alt="" width=90>
+									</div>	
+								</div>
+								<span><img src="images/icon-umberella.png" alt="">${windspeed}</span>
+								<span><img src="images/icon-wind.png" alt="">${humidity}</span>
+								<span><img src="images/icon-compass.png" alt="">${icon}</span>
+						</div>`
+						
+		}
+	}
+	
+</script>
+</html>
